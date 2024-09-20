@@ -1,7 +1,7 @@
 import pandas as pd  
 import matplotlib.pyplot as plt 
 import matplotlib.pylab as lab 
-import seaborn as sea
+import seaborn as sns
 import numpy as np
 import matplotlib as mat 
 import warnings
@@ -52,7 +52,7 @@ plt.title('Total de Vendas por Data de Pedido')
 plt.xticks(rotation=45, ha='right')
 
 plt.tight_layout()  # Ajusta o layout para que os rótulos não se sobreponham
-plt.show()
+#plt.show()
 
 print('\n-----------------------------------------------------------Pergunta 3---------------------------------------------------------------------------------\n')
 
@@ -67,7 +67,7 @@ plt.title('Total de vendas por estado')
 
 plt.tight_layout()
 plt.xticks(rotation=75, ha='right')
-plt.show()
+#plt.show()
 
 print('\n-----------------------------------------------------------Pergunta 4---------------------------------------------------------------------------------\n')
 
@@ -82,4 +82,49 @@ plt.title('10 Cidades com maior total de vendas')
 
 plt.tight_layout()
 plt.xticks(rotation=75, ha='right')
-plt.show()
+#plt.show()
+
+print('\n-----------------------------------------------------------Pergunta 5---------------------------------------------------------------------------------\n')
+
+#PERGUNTA 5: Qual Segmento Teve o Maior Total de Vendas? (Demonstre atraves de um gráfico de pizza)
+
+Vendas_Por_Segmento = df.groupby('Segmento')['Valor_Venda'].sum().reset_index().sort_values(by= 'Valor_Venda', ascending= False)
+print(Vendas_Por_Segmento) #Localiza o primeiro valor
+
+print(f'\nSegmento que teve o maior numero de vendas totais:\n Resposta: {Vendas_Por_Segmento.iloc[0]["Segmento"]}') #Localiza o primeiro valor 
+
+#Grafico Pizza:
+
+def valorBruto(pct, allvals):
+    absolute = int(pct/100.*np.sum(allvals))
+    return f"${absolute:,d}"  # Formata o valor com separadores de milhar
+
+plt.figure(figsize= (18,9))
+
+Vendas_Por_Segmento.set_index('Segmento')['Valor_Venda'].plot(kind= 'pie', autopct=lambda pct: valorBruto(pct, Vendas_Por_Segmento['Valor_Venda']), startangle=90, y= 'Valor_Venda', legend=True,  ylabel='', wedgeprops={'linewidth': 1, 'edgecolor': 'white'})
+
+centre_circle = plt.Circle((0, 0), 0.70, fc='white') #Define o circulo central
+#Adiciona o círculo ao gráfico
+plt.gca().add_artist(centre_circle)
+
+plt.annotate(text = 'Total de Vendas: ' + '$ ' + str(int(sum(df['Valor_Venda']))), xy = (-0.25, 0))
+plt.title('Total de Vendas por segmentos')
+plt.tight_layout()
+#plt.show()
+
+print('\n-----------------------------------------------------------Pergunta 6---------------------------------------------------------------------------------\n')
+
+#PERGUNTA 6: Qual o total de vendas por segmento e por ano
+
+#Convertendo a coluna "data" para conseguir o ano.
+
+df['Data_Pedido'] = pd.to_datetime(df['Data_Pedido'], format= '%d/%m/%Y') #Transformando a coluna "Data_Pedido" para um formato real de data
+df['Ano'] = df['Data_Pedido'].dt.year #Adicionando uma nova coluna
+
+print(df)
+
+Vendas_Por_Segmento_e_Ano = df.groupby(['Segmento', 'Ano'])['Valor_Venda'].sum()
+print(f'\n Aqui estão as Vendas por segmento e por ano: \n{Vendas_Por_Segmento_e_Ano}')
+
+print('\n-----------------------------------------------------------Pergunta 7---------------------------------------------------------------------------------\n')
+
