@@ -71,7 +71,7 @@ plt.xticks(rotation=75, ha='right')
 
 print('\n-----------------------------------------------------------Pergunta 4---------------------------------------------------------------------------------\n')
 
-#PERGUNTA 4: Quais São as 10 Cidades com Maior Total de Vendas?
+#PERGUNTA 4: Quais São as 10 Cidades com Maior Total de Vendas? (Demonstre o resultado através de um gráfico de barras)
 
 print(CidadesOS.groupby('Cidade')['Valor_Venda'].sum().sort_values(ascending=False).head(10))
 top10Cidades = CidadesOS.groupby('Cidade')['Valor_Venda'].sum().sort_values(ascending=False).head(10)
@@ -190,7 +190,7 @@ g.add_legend(title="Segmento")
 g.set(xticks=range(1, 13))  # Colocar todos os meses no eixo x (1-12)
 plt.subplots_adjust(top=0.9)  # Ajustar a posição do título geral
 
-#plt.show()
+plt.show()
 
 print('\n-----------------------------------------------------------Pergunta 10---------------------------------------------------------------------------------\n')
 
